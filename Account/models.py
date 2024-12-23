@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     last_visit = models.DateTimeField()
     username = models.CharField(max_length=20)
+    profile = models.ImageField(upload_to='profiles/', null=True, blank=True)
 
     objects = CustomUserManager()
 
