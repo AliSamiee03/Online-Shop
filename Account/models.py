@@ -37,6 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_visit = models.DateTimeField()
     username = models.CharField(max_length=20)
     profile = models.ImageField(upload_to='profiles/', null=True, blank=True)
+    address = models.ForeignKey('Address', on_delete=models.CASCADE, related_name='users')
 
     objects = CustomUserManager()
 
@@ -45,4 +46,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+class Address(models.Model):
+    province = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    description = models.TextField()
+    house_number = models.PositiveSmallIntegerField()
+    floor = models.PositiveSmallIntegerField()
 
