@@ -48,9 +48,23 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
 class Address(models.Model):
     province = models.CharField(max_length=50)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='addresses')
     city = models.CharField(max_length=50)
     description = models.TextField()
     house_number = models.PositiveSmallIntegerField()
     floor = models.PositiveSmallIntegerField()
 
+class Staff(models.Model):
+    MARITAL_STATUS_CHOICES = [
+        ('Single', 'Single'),
+        ('Married', 'Married'),
+    ]
+
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='staff')
+    national_code = models.CharField(max_length=10)
+    marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS_CHOICES)
+    role = models.ForeignKey('Role', on_delete=models.CASCADE, related_name='staff')
+
+class Role(models.Model):
+    role_name = models.CharField(max_length=50)
+    salary = models.PositiveSmallIntegerField()
