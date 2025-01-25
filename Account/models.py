@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import RegexValidator
 
+NATIONAL_CODE_VALIDATOR = RegexValidator(
+    regex=r'^\d{10}$',
+    message='The national code must be ten digits',
+    code='invalid_national_code'
+)
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -34,14 +40,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=11)
     email = models.EmailField(unique=True)
-    last_visit = models.DateTimeField()
-    username = models.CharField(max_length=20)
+    last_visit = models.DateTimeField(null=True, blank=True)
+    username = models.CharField(max_length=20, unique=True)
     profile = models.ImageField(upload_to='profiles/', null=True, blank=True)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name',]
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username
@@ -61,7 +67,7 @@ class Staff(models.Model):
     ]
 
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='staff')
-    national_code = models.CharField(max_length=10)
+    national_code = models.CharField(max_length=10, unique=True, validators=[NATIONAL_CODE_VALIDATOR])
     marital_status = models.CharField(max_length=10, choices=MARITAL_STATUS_CHOICES)
     role = models.ForeignKey('Role', on_delete=models.CASCADE, related_name='staff')
 

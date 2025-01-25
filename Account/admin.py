@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import CustomUser, Address, Staff, Role
 
-# Register your models here.
+admin.site.register([CustomUser, Address, Staff, Role])
