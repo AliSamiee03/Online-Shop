@@ -1,5 +1,4 @@
 from django.db import models
-from rest_framework.authtoken.admin import User
 from Account.models import CustomUser
 
 
@@ -12,16 +11,16 @@ class Product(models.Model):
     RAM = models.IntegerField()
     cpu = models.CharField(max_length=100)
     camera = models.CharField(max_length=100)
-    discount = models.ForeignKey(Discount, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
+    discount = models.ForeignKey("DiscountCategory", on_delete=models.CASCADE, related_name='products', null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    discount = models.ForeignKey('Discount', on_delete=models.CASCADE, null=True, blank=True, related_name='category')
+    discount = models.ForeignKey('DiscountCategory', on_delete=models.CASCADE, null=True, blank=True, related_name='category')
 
-class Discount(models.Model):
+class DiscountCategory(models.Model):
     name = models.CharField(max_length=100)
     validityـdate = models.DateField()
     amount = models.IntegerField()
@@ -29,7 +28,7 @@ class Discount(models.Model):
         return self.name
 
 class Comment(models.Model):
-    author = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey('Account.CustomUser', on_delete=models.CASCADE, related_name='comments')
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='comments')
     reply_to = models.ForeignKey('Comment', on_delete=models.CASCADE, related_name='replies', null=True, blank=True)
     description = models.TextField()
