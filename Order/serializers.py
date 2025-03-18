@@ -34,3 +34,10 @@ class OrderSerializer(serializers.ModelSerializer):
             if value in ['preparing', 'shipped', 'delivered'] and self.instance.order_products.count() == 0:
                 raise serializers.ValidationError("An order without an item cannot reach this status.")
         return value
+
+
+class DiscountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discount
+        fields = ['id', 'code', 'title', 'amount', 'user', 'due_date']
+        read_only_fields = ['id']  # ID فقط خونده می‌شه
