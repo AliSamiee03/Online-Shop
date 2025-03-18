@@ -22,4 +22,11 @@ class DiscountCategorySerializer(serializers.ModelSerializer):
         fields = ['name', 'validityـdate', 'amount']
         read_only_fields = ['validitydate']
 
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+    product = serializers.StringRelatedField(read_only=True)
+    reply_to = serializers.StringRelatedField(read_only=True)
 
+    class Meta:
+        model = Comment
+        fields = ['author', 'product', 'reply_to', 'description']
