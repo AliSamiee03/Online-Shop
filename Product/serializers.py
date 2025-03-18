@@ -8,3 +8,10 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'name', 'brand', 'model', 'price', 'memory', 'RAM', 'cpu', 'camera', 'discount']
 
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name', 'discount']
+
