@@ -19,3 +19,18 @@ class OrderProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         order = validated_data['order']
         return OrderProduct.objects.create(**validated_data)
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    order_products = OrderProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'order_products', 'paid', 'status', 'final_price', 'discount']
+        read_only_fields = ['id', 'final_price', 'order_products']
+
+    def validate_status(self, value):
+        if self.instance and self.instance.status != value:
+            if value in ['preparing', 'shipped', 'delivered'] and self.instance.order_products.count() == 0:
+                raise serializers.ValidationError("An order without an item cannot reach this status.")
+        return value
