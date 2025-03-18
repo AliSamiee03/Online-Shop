@@ -8,6 +8,13 @@ class UserSerialzer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['first_name', 'last_name', 'phone', 'email', 'username', 'password']
 
+    def validate(self, data):
+        if CustomUser.objects.filter(username=data['username']).exists():
+            raise serializers.ValidationError("This username has already been used.")
+        if CustomUser.objects.filter(email=data['email']).exists():
+            raise serializers.ValidationError("This email has already been registered.")
+        return data
+
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
