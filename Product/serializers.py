@@ -15,3 +15,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['name', 'discount']
 
+
+class DiscountCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiscountCategory
+        fields = ['name', 'validityـdate', 'amount']
+        read_only_fields = ['validitydate']
+
+
