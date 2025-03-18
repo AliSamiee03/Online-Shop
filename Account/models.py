@@ -40,7 +40,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=11)
     email = models.EmailField(unique=True)
-    last_visit = models.DateTimeField(null=True, blank=True)
+    last_visit = models.DateTimeField(auto_now=True ,null=True, blank=True)
     username = models.CharField(max_length=20, unique=True)
     profile = models.ImageField(upload_to='profiles/', null=True, blank=True)
 
